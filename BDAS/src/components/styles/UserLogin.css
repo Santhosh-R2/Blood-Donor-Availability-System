@@ -1,0 +1,288 @@
+/* src/styles/UserLogin.css */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  --primary-red: #d32f2f;
+  --primary-dark: #b71c1c;
+  --text-main: #1e293b;
+  --text-light: #64748b;
+  --bg-color: #f1f5f9;
+  --white: #ffffff;
+}
+
+/* --- 1. Main Wrapper --- */
+.user-log-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-color);
+  background-image: radial-gradient(at 0% 0%, hsla(354,84%,76%,0.2) 0px, transparent 50%),
+                    radial-gradient(at 50% 100%, hsla(205,75%,84%,0.2) 0px, transparent 50%);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  padding: 20px;
+}
+
+/* --- 2. Container Card --- */
+.user-log-container {
+  display: flex;
+  width: 100%;
+  max-width: 1000px;
+  background: var(--white);
+  border-radius: 24px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  min-height: 600px;
+  animation: fadeIn 0.8s ease-out;
+}
+
+/* --- 3. Left Side (Image) --- */
+.user-log-image-side {
+  flex: 1;
+  background: url('https://images.unsplash.com/photo-1615461166324-cd1f91f7b90d?q=80&w=1000&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--white);
+}
+
+.user-log-overlay {
+  background: linear-gradient(135deg, rgba(211, 47, 47, 0.9), rgba(30, 41, 59, 0.85));
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 40px;
+  backdrop-filter: blur(2px);
+}
+
+.user-log-overlay h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
+}
+
+.user-log-overlay p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  line-height: 1.6;
+}
+
+/* --- 4. Right Side (Form) --- */
+.user-log-form-side {
+  flex: 1;
+  padding: 60px 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.user-log-header {
+  margin-bottom: 40px;
+  text-align: left;
+}
+
+.user-log-header h2 {
+  font-size: 2rem;
+  color: var(--text-main);
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.user-log-header p {
+  color: var(--text-light);
+  font-size: 1rem;
+}
+
+/* --- 5. Inputs --- */
+.user-log-input-group {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.user-log-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-light);
+  font-size: 1.2rem;
+  transition: color 0.3s;
+}
+
+.user-log-input-group input {
+  width: 100%;
+  padding: 16px 16px 16px 50px; /* Padding left for icon */
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 1rem;
+  outline: none;
+  background: #f8fafc;
+  transition: all 0.3s ease;
+  color: var(--text-main);
+  font-family: inherit;
+}
+
+.user-log-input-group input:focus {
+  background: var(--white);
+  border-color: var(--primary-red);
+  box-shadow: 0 0 0 4px rgba(211, 47, 47, 0.1);
+}
+
+.user-log-input-group input:focus + .user-log-icon {
+  color: var(--primary-red);
+}
+
+/* Error State */
+.user-log-error-border {
+  border-color: #ef4444 !important;
+  background-color: #fef2f2 !important;
+}
+
+.user-log-error-text {
+  color: #ef4444;
+  font-size: 0.85rem;
+  margin-top: 6px;
+  display: block;
+  padding-left: 4px;
+}
+
+/* Password Toggle */
+.user-log-password-toggle {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-light);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.user-log-password-toggle:hover {
+  color: var(--text-main);
+}
+
+/* --- 6. Options (Checkbox & Forgot Password) --- */
+.user-log-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  font-size: 0.9rem;
+}
+
+.user-log-options label {
+  display: flex;
+  align-items: center;
+  color: var(--text-light);
+  cursor: pointer;
+}
+
+.user-log-options input[type="checkbox"] {
+  accent-color: var(--primary-red);
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.user-log-options a {
+  color: var(--primary-red);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.user-log-options a:hover {
+  color: var(--primary-dark);
+}
+
+/* --- 7. Button --- */
+.user-log-btn {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, var(--primary-red), var(--primary-dark));
+  color: var(--white);
+  border: none;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 10px 20px rgba(211, 47, 47, 0.25);
+}
+
+.user-log-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px rgba(211, 47, 47, 0.35);
+}
+
+/* --- 8. Footer --- */
+.user-log-footer {
+  text-align: center;
+  margin-top: 25px;
+  color: var(--text-light);
+  font-size: 0.95rem;
+}
+
+.user-log-footer a {
+  color: var(--text-main);
+  text-decoration: none;
+  font-weight: 700;
+  margin-left: 5px;
+  position: relative;
+}
+
+.user-log-footer a::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: var(--primary-red);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.user-log-footer a:hover::after {
+  transform: scaleX(1);
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+  .user-log-container {
+    flex-direction: column;
+    max-width: 500px;
+  }
+
+  .user-log-image-side {
+    min-height: 200px;
+    flex: none;
+  }
+
+  .user-log-overlay {
+    padding: 30px;
+  }
+  
+  .user-log-overlay h1 { font-size: 1.8rem; }
+
+  .user-log-form-side {
+    padding: 40px 30px;
+  }
+}

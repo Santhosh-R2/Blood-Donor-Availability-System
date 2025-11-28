@@ -1,0 +1,118 @@
+
+/* src/styles/Navbar.css */
+
+/* --- Variables --- */
+:root {
+  --nav-height: 80px;
+  --primary-red: #d32f2f;
+  --primary-gradient: linear-gradient(135deg, #d32f2f 0%, #ff5252 100%);
+  --text-dark: #1e293b;
+}
+
+/* --- Base Navbar Styles --- */
+.navbar-root {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background: transparent !important;
+  height: var(--nav-height);
+  display: flex;
+  justify-content: center;
+}
+
+/* --- Scrolled State (Glassmorphism) --- */
+.navbar-scrolled {
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+  height: 70px; /* Slightly smaller on scroll */
+}
+
+/* --- Logo Styling --- */
+.brand-logo {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--text-dark);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.brand-highlight {
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* --- Navigation Links (Animated Underline) --- */
+.nav-link {
+  position: relative;
+  font-weight: 500 !important;
+  color: var(--text-dark) !important;
+  margin: 0 12px !important;
+  text-transform: none !important;
+  font-size: 1rem !important;
+  background: transparent !important;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 6px;
+  left: 50%;
+  background: var(--primary-red);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+.nav-link:hover {
+  background: transparent !important;
+  color: var(--primary-red) !important;
+}
+
+.nav-link:hover::after {
+  width: 80%;
+}
+
+/* --- Action Buttons --- */
+.btn-login {
+  border: 2px solid #e2e8f0 !important;
+  border-radius: 50px !important;
+  color: var(--text-dark) !important;
+  font-weight: 600 !important;
+  padding: 6px 24px !important;
+  text-transform: none !important;
+  transition: all 0.3s ease !important;
+}
+
+.btn-login:hover {
+  border-color: var(--primary-red) !important;
+  color: var(--primary-red) !important;
+  background: transparent !important;
+}
+
+.btn-register {
+  background: var(--primary-gradient) !important;
+  border-radius: 50px !important;
+  color: white !important;
+  font-weight: 600 !important;
+  padding: 8px 28px !important;
+  text-transform: none !important;
+  box-shadow: 0 10px 20px rgba(211, 47, 47, 0.2) !important;
+  transition: all 0.3s ease !important;
+}
+
+.btn-register:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px rgba(211, 47, 47, 0.3) !important;
+}
+
+/* --- Mobile Drawer Styles --- */
+.mobile-drawer-paper {
+  width: 280px !important;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}

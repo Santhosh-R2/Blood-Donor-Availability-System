@@ -1,0 +1,302 @@
+
+/* --- Global Reset & Fonts --- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+:root {
+  --primary: #d32f2f;       /* Red */
+  --primary-hover: #b71c1c;
+  --dark: #1e293b;          /* Dark Slate */
+  --text: #64748b;          /* Gray Text */
+  --light: #f8fafc;         /* Light Background */
+  --white: #ffffff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  color: var(--dark);
+  background-color: var(--white);
+  overflow-x: hidden;
+}
+
+/* --- Container Utility --- */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* --- Navbar --- */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 5%;
+  background: rgba(255, 255, 255, 0.95);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--dark);
+}
+
+.logo span {
+  color: var(--primary);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--text);
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.nav-links a:hover {
+  color: var(--primary);
+}
+
+/* --- Buttons --- */
+.btn-nav {
+  padding: 10px 25px;
+  background: var(--dark);
+  color: var(--white);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-primary {
+  padding: 15px 40px;
+  background: var(--primary);
+  color: var(--white);
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 10px 20px rgba(211, 47, 47, 0.3);
+  transition: transform 0.2s;
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  padding: 15px 40px;
+  background: transparent;
+  color: var(--dark);
+  border: 2px solid #e2e8f0;
+  border-radius: 50px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  margin-left: 15px;
+  transition: 0.3s;
+}
+
+.btn-secondary:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.btn-text {
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 15px;
+  padding: 0;
+}
+
+/* --- Hero Section --- */
+.hero-section {
+  text-align: center;
+  padding: 180px 20px 100px;
+  background: linear-gradient(180deg, #fff5f5 0%, #ffffff 100%);
+}
+
+.badge {
+  background: #ffebee;
+  color: var(--primary);
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.hero-section h1 {
+  font-size: 3.5rem;
+  line-height: 1.2;
+  margin-bottom: 20px;
+  color: var(--dark);
+}
+
+.hero-section p {
+  color: var(--text);
+  max-width: 600px;
+  margin: 0 auto 40px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+/* --- Zig-Zag Layout System --- */
+
+/* 1. The Wrapper for each row */
+.row-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 80px;
+  padding: 80px 0;
+}
+
+/* 2. The Logic: Swap order using row-reverse */
+.row-section.reverse {
+  flex-direction: row-reverse;
+}
+
+/* 3. Image Styling */
+.image-wrapper {
+  flex: 1;
+  position: relative;
+}
+
+.image-wrapper img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 2;
+  transition: transform 0.3s ease;
+}
+
+.image-wrapper:hover img {
+  transform: scale(1.02);
+}
+
+/* Decorative background behind image */
+.img-decoration {
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  width: 100%;
+  height: 100%;
+  background: var(--light);
+  border-radius: 20px;
+  z-index: 1;
+}
+
+/* Adjust decoration for reverse layout */
+.reverse .img-decoration {
+  left: auto;
+  right: -20px;
+}
+
+/* 4. Text Styling */
+.text-wrapper {
+  flex: 1;
+}
+
+.sub-heading {
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.text-wrapper h2 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.text-wrapper p {
+  color: var(--text);
+  line-height: 1.7;
+  font-size: 1.05rem;
+  margin-bottom: 20px;
+}
+
+.feature-list {
+  list-style: none;
+  margin-top: 20px;
+}
+
+.feature-list li {
+  margin-bottom: 10px;
+  padding-left: 25px;
+  position: relative;
+  font-weight: 500;
+}
+
+.feature-list li::before {
+  content: '✔';
+  color: var(--primary);
+  position: absolute;
+  left: 0;
+}
+
+/* --- Footer --- */
+.footer {
+  background: var(--dark);
+  color: #94a3b8;
+  text-align: center;
+  padding: 40px;
+  margin-top: 50px;
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 968px) {
+  .hero-section h1 {
+    font-size: 2.5rem;
+  }
+  
+  /* Force column layout on mobile, regardless of zig-zag */
+  .row-section, 
+  .row-section.reverse {
+    flex-direction: column;
+    text-align: center;
+    gap: 40px;
+  }
+  
+  .image-wrapper, .text-wrapper {
+    width: 100%;
+  }
+
+  /* Hide decoration on mobile for cleaner look */
+  .img-decoration {
+    display: none;
+  }
+
+  .nav-links {
+    display: none; /* Simple hide for mobile for this demo */
+  }
+}
