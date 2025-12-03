@@ -1,7 +1,7 @@
 const User = require("../schemas/UserSchema"); // Ensure this matches your file path
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-
+const sendEmail = require("../utils/sendEmail");
 // --- Helper: Generate JWT Token ---
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -163,10 +163,91 @@ const updateUserProfile = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+const forgotPassword = async (req, res) => {
+    try {
+        const { email } = req.body;
 
+        // 1. Find user
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ message: "User with this email does not exist" });
+        }
+
+        // 2. Generate 6-digit OTP
+        const otp = Math.floor(100000 + Math.random() * 900000);
+
+        // 3. Save OTP to DB (Valid for 10 minutes)
+        user.resetPasswordOtp = otp;
+        user.resetPasswordExpire = Date.now() + 10 * 60 * 1000; // 10 mins in milliseconds
+
+        await user.save({ validateBeforeSave: false });
+
+        // 4. Send Email
+        try {
+            await sendEmail({
+                email: user.email,
+                subject: "BloodLink - Password Reset OTP",
+                otp: otp,
+            });
+
+            res.status(200).json({ message: "OTP sent to your email" });
+
+        } catch (emailError) {
+            // Rollback if email fails
+            user.resetPasswordOtp = null;
+            user.resetPasswordExpire = null;
+            await user.save({ validateBeforeSave: false });
+
+            res.status(500).json({ message: "Email could not be sent. Please try again." });
+        }
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// ==========================================
+// @desc    Reset Password - Verify OTP & Change Password
+// @route   POST /api/users/reset-password
+// @access  Public
+// ==========================================
+const resetPassword = async (req, res) => {
+    try {
+        const { email, otp, newPassword } = req.body;
+
+        // 1. Find user by email
+        const user = await User.findOne({ 
+            email,
+            resetPasswordOtp: otp,
+            resetPasswordExpire: { $gt: Date.now() } // Check if expiration time is in the future
+        });
+
+        if (!user) {
+            return res.status(400).json({ message: "Invalid OTP or OTP has expired" });
+        }
+
+        // 2. Update Password
+        // Simply assigning the password triggers the pre('save') middleware in UserSchema to hash it
+        user.password = newPassword;
+        
+        // 3. Clear OTP fields
+        user.resetPasswordOtp = null;
+        user.resetPasswordExpire = null;
+
+        await user.save();
+
+        res.status(200).json({ message: "Password reset successful. You can now login." });
+
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
 module.exports = {
     registerUser,
     loginUser,
     getUserProfile,
-    updateUserProfile
+    updateUserProfile,
+    resetPassword,
+    forgotPassword
 };

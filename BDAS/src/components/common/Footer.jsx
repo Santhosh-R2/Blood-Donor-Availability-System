@@ -23,7 +23,6 @@ import {
   LocationOn 
 } from '@mui/icons-material';
 
-// Import External CSS
 import '../styles/Footer.css';
 
 const Footer = () => {
@@ -32,7 +31,6 @@ const Footer = () => {
       <Container maxWidth="lg">
         <Grid container spacing={5}>
           
-          {/* --- Column 1: Brand & About --- */}
           <Grid item xs={12} md={4}>
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
               <Bloodtype sx={{ fontSize: 40, color: '#d32f2f', mr: 1 }} />
@@ -59,7 +57,6 @@ const Footer = () => {
             </Stack>
           </Grid>
 
-          {/* --- Column 2: Quick Links --- */}
           <Grid item xs={12} sm={6} md={2}>
             <Typography variant="subtitle1" fontWeight="700" color="white" gutterBottom sx={{ mb: 2 }}>
               Platform
@@ -73,7 +70,6 @@ const Footer = () => {
             </Box>
           </Grid>
 
-          {/* --- Column 3: Support & Legal --- */}
           <Grid item xs={12} sm={6} md={2}>
             <Typography variant="subtitle1" fontWeight="700" color="white" gutterBottom sx={{ mb: 2 }}>
               Support
@@ -87,7 +83,6 @@ const Footer = () => {
             </Box>
           </Grid>
 
-          {/* --- Column 4: Contact & Newsletter --- */}
           <Grid item xs={12} md={4}>
             <Typography variant="subtitle1" fontWeight="700" color="white" gutterBottom sx={{ mb: 2 }}>
               Stay Connected
@@ -136,7 +131,6 @@ const Footer = () => {
 
         <Divider sx={{ borderColor: 'rgba(255,255,255,0.1)', mt: 6, mb: 3 }} />
 
-        {/* --- Bottom Bar --- */}
         <Grid container alignItems="center" justifyContent="space-between">
           <Grid item xs={12} md={6}>
             <Typography variant="body2" sx={{ color: '#64748b', textAlign: { xs: 'center', md: 'left' } }}>

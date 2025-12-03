@@ -28,7 +28,7 @@ import {
   Person,
   LocalHospital,
   VolunteerActivism,
-  Login
+  Security 
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Navbar.css';
@@ -37,11 +37,9 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   
-  // --- State for Register Dropdowns ---
   const [registerAnchorEl, setRegisterAnchorEl] = useState(null);
   const [mobileRegisterOpen, setMobileRegisterOpen] = useState(false);
 
-  // --- NEW: State for Login Dropdowns ---
   const [loginAnchorEl, setLoginAnchorEl] = useState(null);
   const [mobileLoginOpen, setMobileLoginOpen] = useState(false);
 
@@ -58,7 +56,6 @@ const Navbar = () => {
     { title: 'Contact Us', path: '/contact' }
   ];
 
-  // --- Scroll Logic ---
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
@@ -67,7 +64,6 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // --- Handlers ---
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -77,7 +73,6 @@ const Navbar = () => {
     setMobileOpen(false);
   };
 
-  // --- REGISTER HANDLERS ---
   const handleRegisterClick = (event) => setRegisterAnchorEl(event.currentTarget);
   const handleRegisterClose = () => setRegisterAnchorEl(null);
   const handleRegisterNavigation = (path) => {
@@ -87,7 +82,6 @@ const Navbar = () => {
   };
   const handleMobileRegisterToggle = () => setMobileRegisterOpen(!mobileRegisterOpen);
 
-  // --- NEW: LOGIN HANDLERS ---
   const handleLoginClick = (event) => setLoginAnchorEl(event.currentTarget);
   const handleLoginClose = () => setLoginAnchorEl(null);
   const handleLoginNavigation = (path) => {
@@ -98,7 +92,6 @@ const Navbar = () => {
   const handleMobileLoginToggle = () => setMobileLoginOpen(!mobileLoginOpen);
 
 
-  // --- Mobile Drawer Content ---
   const drawerContent = (
     <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', p: 3 }}>
       {/* Header */}
@@ -114,7 +107,6 @@ const Navbar = () => {
         </IconButton>
       </Box>
 
-      {/* Main Links */}
       <List sx={{ flexGrow: 1 }}>
         {navLinks.map((item) => (
           <ListItem key={item.title} disablePadding sx={{ mb: 1 }}>
@@ -131,10 +123,8 @@ const Navbar = () => {
         ))}
       </List>
 
-      {/* Action Buttons (Mobile) */}
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         
-        {/* Mobile Login Dropdown */}
         <Box>
           <Button 
             variant="outlined" 
@@ -159,11 +149,14 @@ const Navbar = () => {
                 <ListItemIcon><LocalHospital fontSize="small" color="secondary" /></ListItemIcon>
                 <ListItemText primary="Hospital Login" />
               </ListItemButton>
+              <ListItemButton onClick={() => handleLoginNavigation('/login/admin')} sx={{ pl: 4 }}>
+                <ListItemIcon><Security fontSize="small" sx={{ color: '#4a148c' }} /></ListItemIcon>
+                <ListItemText primary="Admin Login" />
+              </ListItemButton>
             </List>
           </Collapse>
         </Box>
 
-        {/* Mobile Register Dropdown */}
         <Box>
           <Button 
             variant="contained" 
@@ -205,7 +198,6 @@ const Navbar = () => {
         <Container maxWidth="xl">
           <Toolbar disableGutters sx={{ height: '100%', display: 'flex', justifyContent: 'space-between' }}>
             
-            {/* 1. Logo */}
             <Box 
               className="brand-logo" 
               onClick={() => handleNavigation('/')}
@@ -217,7 +209,6 @@ const Navbar = () => {
               </Typography>
             </Box>
 
-            {/* 2. Desktop Links */}
             {!isMobile && (
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 {navLinks.map((item) => (
@@ -233,11 +224,9 @@ const Navbar = () => {
               </Box>
             )}
 
-            {/* 3. Desktop Buttons & Dropdowns */}
             {!isMobile && (
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                 
-                {/* --- LOGIN DROPDOWN --- */}
                 <Button 
                   className="btn-login" 
                   variant="outlined"
@@ -267,9 +256,12 @@ const Navbar = () => {
                   <MenuItem onClick={() => handleLoginNavigation('/login/hospital')} sx={{ py: 1.5 }}>
                     <LocalHospital sx={{ mr: 2, color: '#d32f2f', fontSize: 20 }} /> Hospital 
                   </MenuItem>
+                  {/* --- NEW: Admin Option --- */}
+                  <MenuItem onClick={() => handleLoginNavigation('/login/admin')} sx={{ py: 1.5 }}>
+                    <Security sx={{ mr: 2, color: '#4a148c', fontSize: 20 }} /> Admin 
+                  </MenuItem>
                 </Menu>
                 
-                {/* --- REGISTER DROPDOWN --- */}
                 <Button 
                   className="btn-register" 
                   variant="contained"
@@ -303,7 +295,6 @@ const Navbar = () => {
               </Box>
             )}
 
-            {/* 4. Mobile Toggle */}
             {isMobile && (
               <IconButton 
                 onClick={handleDrawerToggle}
@@ -317,7 +308,6 @@ const Navbar = () => {
         </Container>
       </AppBar>
 
-      {/* Mobile Drawer */}
       <Drawer
         variant="temporary"
         anchor="right"

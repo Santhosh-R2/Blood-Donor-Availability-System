@@ -4,6 +4,7 @@ import { Email, Lock, Visibility, VisibilityOff } from '@mui/icons-material';
 import { ToastContainer, toast } from 'react-toastify'; // Import Toast
 import 'react-toastify/dist/ReactToastify.css'; // Import CSS
 import '../styles/UserLogin.css';
+import Navbar from '../common/Navbar';
 
 const UserLogin = () => {
   const navigate = useNavigate();
@@ -66,7 +67,7 @@ const UserLogin = () => {
 
           // 3. Redirect to Dashboard/Home after short delay
           setTimeout(() => {
-            navigate('/'); 
+            navigate('/user/dashboard'); 
           }, 2000);
 
         } else {
@@ -87,6 +88,8 @@ const UserLogin = () => {
   };
 
   return (
+    <div>
+<Navbar/>
     <div className="user-log-wrapper">
       <ToastContainer />
       <div className="user-log-container">
@@ -147,7 +150,7 @@ const UserLogin = () => {
               <label>
                 <input type="checkbox" /> Remember me
               </label>
-              <Link to="/forgot-password">Forgot Password?</Link>
+              <Link to="/forgot-password-user">Forgot Password?</Link>
             </div>
 
             {/* Submit Button */}
@@ -163,6 +166,8 @@ const UserLogin = () => {
         </div>
       </div>
     </div>
+        </div>
+
   );
 };
 

@@ -12,7 +12,7 @@
   --border-radius: 16px;
 }
 
-.contact-wrapper {
+.contact-msg-wrapper {
   font-family: 'Plus Jakarta Sans', sans-serif;
   color: var(--dark);
   background-color: var(--bg-light);
@@ -21,7 +21,7 @@
 }
 
 /* Subtle Grid Background */
-.contact-bg-pattern {
+.contact-msg-bg-pattern {
   position: absolute;
   top: 0;
   left: 0;
@@ -34,7 +34,7 @@
 }
 
 /* --- 1. Header --- */
-.contact-header {
+.contact-msg-header {
   text-align: center;
   padding: 140px 20px 80px;
   position: relative;
@@ -42,7 +42,7 @@
   background: linear-gradient(to bottom, rgba(255,255,255,0.8), var(--bg-light));
 }
 
-.tagline {
+.contact-msg-tagline {
   color: var(--primary);
   font-weight: 700;
   font-size: 0.85rem;
@@ -54,7 +54,7 @@
   margin-bottom: 16px;
 }
 
-.contact-header h1 {
+.contact-msg-header h1 {
   font-size: 3rem;
   font-weight: 800;
   margin-bottom: 20px;
@@ -62,7 +62,7 @@
   color: var(--dark);
 }
 
-.header-desc {
+.contact-msg-header-desc {
   color: var(--text-gray);
   font-size: 1.15rem;
   line-height: 1.6;
@@ -71,33 +71,32 @@
 }
 
 /* --- 2. Main Container (Grid Layout) --- */
-.contact-container {
+.contact-msg-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 24px 100px;
   display: grid;
-  /* Desktop: Left takes 1 part, Right takes 1.5 parts */
   grid-template-columns: 1fr 1.4fr; 
   gap: 60px;
   position: relative;
   z-index: 2;
-  align-items: stretch; /* Ensures columns are equal height visually */
+  align-items: stretch;
 }
 
 /* --- Left Column --- */
-.info-column {
+.contact-msg-info-column {
   display: flex;
   flex-direction: column;
   gap: 30px;
 }
 
-.info-grid {
+.contact-msg-info-grid {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.info-card {
+.contact-msg-info-card {
   background: var(--white);
   padding: 24px;
   border-radius: var(--border-radius);
@@ -109,12 +108,12 @@
   transition: transform 0.3s ease;
 }
 
-.info-card:hover {
+.contact-msg-info-card:hover {
   transform: translateY(-3px);
   border-color: #fca5a5;
 }
 
-.icon-box {
+.contact-msg-icon-box {
   width: 50px;
   height: 50px;
   background: #fef2f2;
@@ -126,23 +125,22 @@
   flex-shrink: 0;
 }
 
-.info-text h4 {
+.contact-msg-info-text h4 {
   margin: 0 0 4px 0;
   font-size: 1.1rem;
   font-weight: 700;
 }
 
-.info-text p {
+.contact-msg-info-text p {
   margin: 0;
   font-size: 0.95rem;
   color: var(--text-gray);
   line-height: 1.5;
 }
 
-/* Map Wrapper */
-.map-wrapper {
-  flex-grow: 1; /* Fills remaining vertical space */
-  min-height: 300px; /* Fallback for mobile */
+.contact-msg-map-wrapper {
+  flex-grow: 1;
+  min-height: 300px;
   border-radius: var(--border-radius);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
@@ -150,35 +148,35 @@
 }
 
 /* --- Right Column (Form) --- */
-.form-column {
+.contact-msg-form-column {
   height: 100%;
 }
 
-.contact-form {
+.contact-msg-form {
   background: var(--white);
   padding: 48px 40px;
   border-radius: 24px;
   box-shadow: var(--shadow-lg);
   border: 1px solid #e2e8f0;
-  height: 100%; /* Ensures form stretches if needed */
+  height: 100%;
 }
 
-.form-head h3 {
+.contact-msg-form-head h3 {
   font-size: 1.8rem;
   font-weight: 800;
   margin-bottom: 8px;
 }
 
-.form-head p {
+.contact-msg-form-head p {
   color: var(--text-gray);
   margin-bottom: 32px;
 }
 
-.form-group {
+.contact-msg-form-group {
   margin-bottom: 24px;
 }
 
-.form-group label {
+.contact-msg-form-group label {
   display: block;
   font-size: 0.9rem;
   font-weight: 600;
@@ -186,9 +184,9 @@
   color: var(--dark);
 }
 
-.form-group input,
-.form-group select,
-.form-group textarea {
+.contact-msg-form-group input,
+.contact-msg-form-group select,
+.contact-msg-form-group textarea {
   width: 100%;
   padding: 14px 16px;
   border-radius: 12px;
@@ -200,16 +198,16 @@
   transition: all 0.3s ease;
 }
 
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
+.contact-msg-form-group input:focus,
+.contact-msg-form-group select:focus,
+.contact-msg-form-group textarea:focus {
   outline: none;
   border-color: var(--primary);
   background-color: var(--white);
   box-shadow: 0 0 0 4px rgba(211, 47, 47, 0.1);
 }
 
-.btn-submit {
+.contact-msg-btn-submit {
   width: 100%;
   padding: 16px;
   background-color: var(--primary);
@@ -225,41 +223,40 @@
   transition: background-color 0.3s ease, transform 0.2s;
 }
 
-.btn-submit:hover {
+.contact-msg-btn-submit:hover {
   background-color: var(--primary-dark);
   transform: translateY(-2px);
 }
 
 /* --- 3. FAQ Section --- */
-.faq-section {
+.contact-msg-faq-section {
   background: var(--white);
   padding: 100px 0;
   position: relative;
   z-index: 2;
-  /* Slanted divider effect */
   clip-path: polygon(0 0, 100% 5%, 100% 100%, 0% 100%);
   margin-top: -50px; 
   padding-top: 150px;
 }
 
-.faq-container {
+.contact-msg-faq-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 24px;
 }
 
-.section-title {
+.contact-msg-section-title {
   text-align: center;
   margin-bottom: 70px;
 }
 
-.section-title h2 {
+.contact-msg-section-title h2 {
   font-size: 2.5rem;
   font-weight: 800;
   margin-bottom: 15px;
 }
 
-.title-underline {
+.contact-msg-title-underline {
   width: 60px;
   height: 5px;
   background: var(--primary);
@@ -267,19 +264,19 @@
   border-radius: 10px;
 }
 
-.section-subtitle {
+.contact-msg-section-subtitle {
   color: var(--text-gray);
   font-size: 1.1rem;
 }
 
 /* Grid for FAQ Cards */
-.faq-grid {
+.contact-msg-faq-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 30px;
 }
 
-.faq-card {
+.contact-msg-faq-card {
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 20px;
@@ -289,13 +286,13 @@
   overflow: hidden;
 }
 
-.faq-card:hover {
+.contact-msg-faq-card:hover {
   transform: translateY(-10px);
   box-shadow: var(--shadow-lg);
   border-color: rgba(211, 47, 47, 0.2);
 }
 
-.faq-icon-wrapper {
+.contact-msg-faq-icon-wrapper {
   width: 60px;
   height: 60px;
   background: #fff1f2;
@@ -308,27 +305,27 @@
   transition: transform 0.3s ease;
 }
 
-.faq-card:hover .faq-icon-wrapper {
+.contact-msg-faq-card:hover .contact-msg-faq-icon-wrapper {
   transform: rotate(15deg) scale(1.1);
   background: var(--primary);
   color: var(--white);
 }
 
-.faq-content h4 {
+.contact-msg-faq-content h4 {
   font-size: 1.25rem;
   font-weight: 700;
   margin-bottom: 12px;
   color: var(--dark);
 }
 
-.faq-content p {
+.contact-msg-faq-content p {
   color: var(--text-gray);
   line-height: 1.6;
   margin-bottom: 24px;
   font-size: 0.95rem;
 }
 
-.faq-link {
+.contact-msg-faq-link {
   text-decoration: none;
   color: var(--primary);
   font-weight: 700;
@@ -339,36 +336,35 @@
   transition: gap 0.3s;
 }
 
-.faq-link:hover {
+.contact-msg-faq-link:hover {
   gap: 10px;
   color: var(--primary-dark);
 }
 
 /* --- Responsive Design --- */
 @media (max-width: 992px) {
-  .contact-header h1 {
+  .contact-msg-header h1 {
     font-size: 2.5rem;
   }
 
-  .contact-container {
-    grid-template-columns: 1fr; /* Stack columns */
+  .contact-msg-container {
+    grid-template-columns: 1fr;
     gap: 50px;
   }
 
-  /* Reorder: Form first on mobile, then info */
-  .form-column {
+  .contact-msg-form-column {
     order: 1;
   }
-  .info-column {
+  .contact-msg-info-column {
     order: 2;
   }
 
-  .map-wrapper {
-    min-height: 300px; /* Specific height for mobile */
+  .contact-msg-map-wrapper {
+    min-height: 300px;
   }
 
-  .faq-section {
-    clip-path: none; /* Remove slant on mobile */
+  .contact-msg-faq-section {
+    clip-path: none;
     margin-top: 0;
     padding-top: 80px;
   }

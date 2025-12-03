@@ -5,13 +5,16 @@ import {
   CalendarToday, Bloodtype, MonitorWeight, Male,
   MedicalServices, Healing
 } from '@mui/icons-material';
-import '../styles/DonorRegister.css'; // We will use the same styles
+import { ToastContainer, toast } from 'react-toastify'; 
+import 'react-toastify/dist/ReactToastify.css'; 
+import '../styles/DonorRegister.css';
+import Navbar from '../common/Navbar';
 
 const DonorRegister = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   
-  // --- Form State ---
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -21,32 +24,49 @@ const DonorRegister = () => {
     bloodGroup: '',
     weight: '',
     lastDonationDate: '',
-    hasDisease: '', // 'yes' or 'no'
-    hadSurgery: '', // 'yes' or 'no'
+    hasDisease: '', 
+    hadSurgery: '', 
     password: '',
     confirmPassword: ''
   });
 
-  // --- Error State ---
   const [errors, setErrors] = useState({});
 
-  // --- Handle Input Change ---
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    // Clear error on type
+    
     if (errors[name]) {
       setErrors({ ...errors, [name]: '' });
     }
+
+    if (name === 'fullName') {
+        const alphabetRegex = /^[a-zA-Z\s]*$/;
+        if (alphabetRegex.test(value)) {
+            setFormData({ ...formData, [name]: value });
+        }
+    }
+    else if (name === 'mobile') {
+        const numberRegex = /^\d*$/;
+        if (numberRegex.test(value) && value.length <= 10) {
+            setFormData({ ...formData, [name]: value });
+        }
+    }
+    else if (name === 'weight') {
+        const numberRegex = /^\d*$/;
+        if (numberRegex.test(value) && value.length <= 3) {
+            setFormData({ ...formData, [name]: value });
+        }
+    }
+    else {
+        setFormData({ ...formData, [name]: value });
+    }
   };
 
-  // --- Validation Logic ---
   const validate = () => {
     let tempErrors = {};
     let isValid = true;
 
-    // 1. Required Fields
-    const requiredFields = ['fullName', 'email', 'mobile', 'dob', 'gender', 'bloodGroup', 'weight', 'password', 'confirmPassword'];
+    const requiredFields = ['fullName', 'email', 'mobile', 'dob', 'gender', 'bloodGroup', 'weight', 'password', 'confirmPassword', 'hasDisease', 'hadSurgery'];
     requiredFields.forEach((key) => {
       if (!formData[key]) {
         tempErrors[key] = "This field is required";
@@ -54,27 +74,22 @@ const DonorRegister = () => {
       }
     });
 
-    // 2. Mobile (10 digits)
-    const mobileRegex = /^[0-9]{10}$/;
-    if (formData.mobile && !mobileRegex.test(formData.mobile)) {
-      tempErrors.mobile = "Enter a valid 10-digit mobile number.";
+    if (formData.mobile && formData.mobile.length !== 10) {
+      tempErrors.mobile = "Mobile number must be 10 digits.";
       isValid = false;
     }
 
-    // 3. Email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (formData.email && !emailRegex.test(formData.email)) {
       tempErrors.email = "Enter a valid email.";
       isValid = false;
     }
 
-    // 4. Weight (Must be > 45kg for donation)
-    if (formData.weight && parseInt(formData.weight) < 45) {
-      tempErrors.weight = "Weight must be at least 45kg to donate.";
+    if (formData.weight && parseInt(formData.weight) <= 50) {
+      tempErrors.weight = "Weight must be greater than 50kg.";
       isValid = false;
     }
 
-    // 5. Age Check (Approximate based on DOB)
     if (formData.dob) {
       const birthDate = new Date(formData.dob);
       const today = new Date();
@@ -84,12 +99,21 @@ const DonorRegister = () => {
         age--;
       }
       if (age < 18) {
-        tempErrors.dob = "You must be at least 18 years old.";
+        tempErrors.dob = "You must be at least 18 years old to donate.";
         isValid = false;
       }
     }
 
-    // 6. Password Match
+    if (formData.hasDisease === 'yes') {
+        tempErrors.hasDisease = "You cannot register if you have a chronic disease.";
+        isValid = false;
+    }
+
+    if (formData.hadSurgery === 'yes') {
+        tempErrors.hadSurgery = "You cannot donate if you had surgery in the last 6 months.";
+        isValid = false;
+    }
+
     if (formData.password && formData.confirmPassword) {
       if (formData.password !== formData.confirmPassword) {
         tempErrors.confirmPassword = "Passwords do not match.";
@@ -98,214 +122,250 @@ const DonorRegister = () => {
     }
 
     setErrors(tempErrors);
+
+    if (!isValid) {
+      toast.error("Validation failed. Please check the form.");
+    }
+
     return isValid;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (validate()) {
-      console.log("Donor Registration Data:", formData);
-      alert("Registration Successful! Welcome to the hero community.");
-      navigate('/'); 
+      setLoading(true);
+
+      try {
+        const response = await fetch("http://localhost:5001/Donor/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          toast.success("Donor Registration Successful!", {
+            position: "top-right",
+            autoClose: 2000, 
+          });
+
+          setTimeout(() => {
+            navigate('/login/donor');
+          }, 2000);
+
+        } else {
+          toast.error(data.message || "Registration Failed", {
+            position: "top-center"
+          });
+        }
+
+      } catch (error) {
+        console.error("Network Error:", error);
+        toast.error("Server not responding. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
   return (
-    <div className="auth-wrapper">
-      <div className="auth-container register-container">
-        <div className="auth-header">
-          <h2>Become a Donor</h2>
-          <p>Your blood can be the lifeline for someone in need.</p>
-        </div>
+    <div>
+      <Navbar/>
+      <div className="auth-wrapper">
+        <ToastContainer />
 
-        <form onSubmit={handleSubmit} className="auth-form">
-          
-          {/* --- Section 1: Personal Details --- */}
-          <h4 className="form-section-title">Personal Details</h4>
-          <div className="form-grid">
-            
-            {/* Full Name */}
-            <div className="input-group full-width">
-              <Person className="input-icon" />
-              <input 
-                type="text" name="fullName" placeholder="Full Name"
-                value={formData.fullName} onChange={handleChange}
-                className={errors.fullName ? 'error-input' : ''}
-              />
-              {errors.fullName && <span className="error-text">{errors.fullName}</span>}
-            </div>
-
-            {/* Email */}
-            <div className="input-group">
-              <Email className="input-icon" />
-              <input 
-                type="email" name="email" placeholder="Email Address"
-                value={formData.email} onChange={handleChange}
-                className={errors.email ? 'error-input' : ''}
-              />
-              {errors.email && <span className="error-text">{errors.email}</span>}
-            </div>
-
-            {/* Mobile */}
-            <div className="input-group">
-              <Phone className="input-icon" />
-              <input 
-                type="text" name="mobile" placeholder="Mobile Number"
-                value={formData.mobile} onChange={handleChange}
-                className={errors.mobile ? 'error-input' : ''}
-              />
-              {errors.mobile && <span className="error-text">{errors.mobile}</span>}
-            </div>
-
-            {/* DOB */}
-            <div className="input-group">
-              <CalendarToday className="input-icon" />
-              <input 
-                type="text" 
-                onFocus={(e) => (e.target.type = "date")}
-                onBlur={(e) => (e.target.type = "text")}
-                name="dob" placeholder="Date of Birth"
-                value={formData.dob} onChange={handleChange}
-                className={errors.dob ? 'error-input' : ''}
-              />
-              {errors.dob && <span className="error-text">{errors.dob}</span>}
-            </div>
-            
-             {/* Gender */}
-             <div className="input-group">
-              <Male className="input-icon" />
-              <select 
-                name="gender" 
-                value={formData.gender} 
-                onChange={handleChange}
-                className={errors.gender ? 'error-input' : ''}
-              >
-                <option value="">Select Gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-              </select>
-              {errors.gender && <span className="error-text">{errors.gender}</span>}
-            </div>
+        <div className="auth-container register-container">
+          <div className="auth-header">
+            <h2>Become a Donor</h2>
+            <p>Your blood can be the lifeline for someone in need.</p>
           </div>
 
-          {/* --- Section 2: Medical & Physical Stats --- */}
-          <h4 className="form-section-title">Donor Eligibility</h4>
-          <div className="form-grid">
+          <form onSubmit={handleSubmit} className="auth-form">
             
-            {/* Blood Group */}
-            <div className="input-group">
-              <Bloodtype className="input-icon" />
-              <select 
-                name="bloodGroup" 
-                value={formData.bloodGroup} 
-                onChange={handleChange}
-                className={errors.bloodGroup ? 'error-input' : ''}
-              >
-                <option value="">Blood Group</option>
-                <option value="A+">A+</option>
-                <option value="A-">A-</option>
-                <option value="B+">B+</option>
-                <option value="B-">B-</option>
-                <option value="AB+">AB+</option>
-                <option value="AB-">AB-</option>
-                <option value="O+">O+</option>
-                <option value="O-">O-</option>
-              </select>
-              {errors.bloodGroup && <span className="error-text">{errors.bloodGroup}</span>}
-            </div>
-
-            {/* Weight */}
-            <div className="input-group">
-              <MonitorWeight className="input-icon" />
-              <input 
-                type="number" name="weight" placeholder="Weight (kg)"
-                value={formData.weight} onChange={handleChange}
-                className={errors.weight ? 'error-input' : ''}
-              />
-              {errors.weight && <span className="error-text">{errors.weight}</span>}
-            </div>
-
-            {/* Last Donation */}
-            <div className="input-group full-width">
-              <CalendarToday className="input-icon" />
-              <input 
-                type="text" 
-                onFocus={(e) => (e.target.type = "date")}
-                onBlur={(e) => (e.target.type = "text")}
-                name="lastDonationDate" placeholder="Last Donation Date (Optional)"
-                value={formData.lastDonationDate} onChange={handleChange}
-              />
-            </div>
-
-            {/* Disease Check */}
-            <div className="input-group">
-              <MedicalServices className="input-icon" />
-              <select 
-                name="hasDisease" 
-                value={formData.hasDisease} 
-                onChange={handleChange}
-              >
-                <option value="">Any Chronic Disease?</option>
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-              </select>
-            </div>
-
-            {/* Surgery Check */}
-            <div className="input-group">
-              <Healing className="input-icon" />
-              <select 
-                name="hadSurgery" 
-                value={formData.hadSurgery} 
-                onChange={handleChange}
-              >
-                <option value="">Surgery in last 6 months?</option>
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-              </select>
-            </div>
-          </div>
-
-          {/* --- Section 3: Security --- */}
-          <h4 className="form-section-title">Account Security</h4>
-          <div className="form-grid">
-            <div className="input-group">
-              <Lock className="input-icon" />
-              <input 
-                type={showPassword ? "text" : "password"} 
-                name="password" 
-                placeholder="Password"
-                value={formData.password} 
-                onChange={handleChange}
-                className={errors.password ? 'error-input' : ''}
-              />
-              <div className="password-toggle" onClick={() => setShowPassword(!showPassword)}>
-                {showPassword ? <VisibilityOff /> : <Visibility />}
+            <h4 className="form-section-title">Personal Details</h4>
+            <div className="form-grid">
+              
+              <div className="input-group full-width">
+                <Person className="input-icon" />
+                <input 
+                  type="text" name="fullName" placeholder="Full Name (Alphabets Only)"
+                  value={formData.fullName} onChange={handleChange}
+                  className={errors.fullName ? 'error-input' : ''}
+                />
+                {errors.fullName && <span className="error-text">{errors.fullName}</span>}
               </div>
-              {errors.password && <span className="error-text">{errors.password}</span>}
+
+              <div className="input-group">
+                <Email className="input-icon" />
+                <input 
+                  type="email" name="email" placeholder="Email Address"
+                  value={formData.email} onChange={handleChange}
+                  className={errors.email ? 'error-input' : ''}
+                />
+                {errors.email && <span className="error-text">{errors.email}</span>}
+              </div>
+
+              <div className="input-group">
+                <Phone className="input-icon" />
+                <input 
+                  type="text" name="mobile" placeholder="Mobile Number (10 Digits)"
+                  value={formData.mobile} onChange={handleChange}
+                  className={errors.mobile ? 'error-input' : ''}
+                />
+                {errors.mobile && <span className="error-text">{errors.mobile}</span>}
+              </div>
+
+              <div className="input-group">
+                <CalendarToday className="input-icon" />
+                <input 
+                  type="text" 
+                  onFocus={(e) => (e.target.type = "date")}
+                  onBlur={(e) => (e.target.type = "text")}
+                  name="dob" placeholder="Date of Birth (18+)"
+                  value={formData.dob} onChange={handleChange}
+                  className={errors.dob ? 'error-input' : ''}
+                />
+                {errors.dob && <span className="error-text">{errors.dob}</span>}
+              </div>
+              
+              <div className="input-group">
+                <Male className="input-icon" />
+                <select 
+                  name="gender" 
+                  value={formData.gender} 
+                  onChange={handleChange}
+                  className={errors.gender ? 'error-input' : ''}
+                >
+                  <option value="">Select Gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+                {errors.gender && <span className="error-text">{errors.gender}</span>}
+              </div>
             </div>
 
-            <div className="input-group">
-              <Lock className="input-icon" />
-              <input 
-                type="password" 
-                name="confirmPassword" 
-                placeholder="Confirm Password"
-                value={formData.confirmPassword} 
-                onChange={handleChange}
-                className={errors.confirmPassword ? 'error-input' : ''}
-              />
-              {errors.confirmPassword && <span className="error-text">{errors.confirmPassword}</span>}
+            <h4 className="form-section-title">Donor Eligibility</h4>
+            <div className="form-grid">
+              
+              <div className="input-group">
+                <Bloodtype className="input-icon" />
+                <select 
+                  name="bloodGroup" 
+                  value={formData.bloodGroup} 
+                  onChange={handleChange}
+                  className={errors.bloodGroup ? 'error-input' : ''}
+                >
+                  <option value="">Blood Group</option>
+                  <option value="A+">A+</option>
+                  <option value="A-">A-</option>
+                  <option value="B+">B+</option>
+                  <option value="B-">B-</option>
+                  <option value="AB+">AB+</option>
+                  <option value="AB-">AB-</option>
+                  <option value="O+">O+</option>
+                  <option value="O-">O-</option>
+                </select>
+                {errors.bloodGroup && <span className="error-text">{errors.bloodGroup}</span>}
+              </div>
+
+              <div className="input-group">
+                <MonitorWeight className="input-icon" />
+                <input 
+                  type="text" name="weight" placeholder="Weight (kg) > 50"
+                  value={formData.weight} onChange={handleChange}
+                  className={errors.weight ? 'error-input' : ''}
+                />
+                {errors.weight && <span className="error-text">{errors.weight}</span>}
+              </div>
+
+              <div className="input-group full-width">
+                <CalendarToday className="input-icon" />
+                <input 
+                  type="text" 
+                  onFocus={(e) => (e.target.type = "date")}
+                  onBlur={(e) => (e.target.type = "text")}
+                  name="lastDonationDate" placeholder="Last Donation Date (Optional)"
+                  value={formData.lastDonationDate} onChange={handleChange}
+                />
+              </div>
+
+              <div className="input-group full-width">
+                <MedicalServices className="input-icon" />
+                <select 
+                  name="hasDisease" 
+                  value={formData.hasDisease} 
+                  onChange={handleChange}
+                  className={errors.hasDisease ? 'error-input' : ''}
+                >
+                  <option value="">Do you have any Chronic Disease?</option>
+                  <option value="yes">Yes</option>
+                  <option value="no">No</option>
+                </select>
+                {errors.hasDisease && <span className="error-text">{errors.hasDisease}</span>}
+              </div>
+
+              <div className="input-group full-width">
+                <Healing className="input-icon" />
+                <select 
+                  name="hadSurgery" 
+                  value={formData.hadSurgery} 
+                  onChange={handleChange}
+                  className={errors.hadSurgery ? 'error-input' : ''}
+                >
+                  <option value="">Any Surgery in last 6 months?</option>
+                  <option value="yes">Yes</option>
+                  <option value="no">No</option>
+                </select>
+                {errors.hadSurgery && <span className="error-text">{errors.hadSurgery}</span>}
+              </div>
             </div>
-          </div>
 
-          <button type="submit" className="btn-auth">Register as Donor</button>
+            <h4 className="form-section-title">Account Security</h4>
+            <div className="form-grid">
+              <div className="input-group">
+                <Lock className="input-icon" />
+                <input 
+                  type={showPassword ? "text" : "password"} 
+                  name="password" 
+                  placeholder="Password"
+                  value={formData.password} 
+                  onChange={handleChange}
+                  className={errors.password ? 'error-input' : ''}
+                />
+                <div className="password-toggle" onClick={() => setShowPassword(!showPassword)}>
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </div>
+                {errors.password && <span className="error-text">{errors.password}</span>}
+              </div>
 
-          <p className="auth-footer">
-            Already have an account? <Link to="/login">Login here</Link>
-          </p>
-        </form>
+              <div className="input-group">
+                <Lock className="input-icon" />
+                <input 
+                  type="password" 
+                  name="confirmPassword" 
+                  placeholder="Confirm Password"
+                  value={formData.confirmPassword} 
+                  onChange={handleChange}
+                  className={errors.confirmPassword ? 'error-input' : ''}
+                />
+                {errors.confirmPassword && <span className="error-text">{errors.confirmPassword}</span>}
+              </div>
+            </div>
+
+            <button type="submit" className="btn-auth" disabled={loading}>
+              {loading ? "Registering..." : "Register as Donor"}
+            </button>
+
+            <p className="auth-footer">
+              Already have an account? <Link to="/login/donor">Login here</Link>
+            </p>
+          </form>
+        </div>
       </div>
     </div>
   );

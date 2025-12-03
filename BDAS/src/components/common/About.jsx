@@ -1,20 +1,19 @@
 import React from 'react';
 import '../styles/About.css';
-
-// Icons (Using material icons gives a much more pro look than emojis)
 import { Speed, Security, Favorite, LinkedIn, Twitter, Language } from '@mui/icons-material';
 
-// Placeholder images
 import imgStory from '../../assets/img3.jpg'; 
-import team1 from '../../assets/img1.jpg';   
-import team2 from '../../assets/img2.jpg';
-import team3 from '../../assets/img4.jpg';
+import team1 from '../../assets/dev1.jpg';   
+import team2 from '../../assets/dev2.jpg';
+import team3 from '../../assets/dev3.jpg';
+import Navbar from './Navbar';
 
 const About = () => {
   return (
+    <div>
+<Navbar/>
     <div className="about-wrapper">
       
-      {/* --- 1. Hero / Header Section --- */}
       <header className="about-header">
         <div className="header-content">
           <span className="tagline">WHO WE ARE</span>
@@ -24,27 +23,22 @@ const About = () => {
             the communication gap between blood donors and hospitals.
           </p>
         </div>
-        {/* Decorative Background Shape */}
         <div className="header-bg-shape"></div>
       </header>
 
-      {/* --- 2. Our Story (Zig-Zag Layout) --- */}
       <div className="about-container">
         <div className="story-section">
           
-          {/* Image Side */}
           <div className="story-image-wrapper">
             <div className="story-blob"></div> {/* Animated Blob */}
             <img src={imgStory} alt="Our Story" className="story-img" />
             
-            {/* Floating Badge */}
             <div className="experience-badge">
               <span className="exp-number">100%</span>
               <span className="exp-text">Non-Profit</span>
             </div>
           </div>
 
-          {/* Text Side */}
           <div className="story-content">
             <h4 className="sub-heading">THE ORIGIN</h4>
             <h2>Bridging the Gap</h2>
@@ -59,7 +53,6 @@ const About = () => {
               geo-located network.
             </p>
 
-            {/* Stats Grid */}
             <div className="stats-grid">
               <div className="stat-box">
                 <h4 className="counter">10k+</h4>
@@ -78,7 +71,6 @@ const About = () => {
         </div>
       </div>
 
-      {/* --- 3. Core Values --- */}
       <section className="values-section">
         <div className="about-container">
           <div className="section-title centered">
@@ -88,7 +80,6 @@ const About = () => {
           </div>
           
           <div className="values-grid">
-            {/* Value 1 */}
             <div className="value-card">
               <div className="icon-box">
                 <Speed fontSize="large" />
@@ -100,7 +91,6 @@ const About = () => {
               </p>
             </div>
 
-            {/* Value 2 */}
             <div className="value-card">
               <div className="icon-box">
                 <Security fontSize="large" />
@@ -112,7 +102,6 @@ const About = () => {
               </p>
             </div>
 
-            {/* Value 3 */}
             <div className="value-card">
               <div className="icon-box">
                 <Favorite fontSize="large" />
@@ -127,7 +116,6 @@ const About = () => {
         </div>
       </section>
 
-      {/* --- 4. The Team --- */}
       <section className="team-section">
         <div className="about-container">
           <div className="section-title centered">
@@ -152,7 +140,6 @@ const About = () => {
               </div>
             </div>
 
-            {/* Member 2 */}
             <div className="team-card">
               <div className="team-img-box">
                 <img src={team2} alt="Sarah Williams" />
@@ -167,7 +154,6 @@ const About = () => {
               </div>
             </div>
 
-            {/* Member 3 */}
             <div className="team-card">
               <div className="team-img-box">
                 <img src={team3} alt="Michael Chen" />
@@ -185,7 +171,6 @@ const About = () => {
         </div>
       </section>
 
-      {/* --- 5. CTA Section --- */}
       <section className="cta-wrapper">
         <div className="cta-box">
           <h2>Ready to make a difference?</h2>
@@ -195,6 +180,8 @@ const About = () => {
       </section>
 
     </div>
+        </div>
+
   );
 }
 

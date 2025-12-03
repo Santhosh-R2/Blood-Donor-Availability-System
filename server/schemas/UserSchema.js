@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs"); // You will need: npm install bcryptjs
+const bcrypt = require("bcryptjs"); // npm install bcryptjs
 
 const UserSchema = new mongoose.Schema({
     fullName: {
@@ -15,18 +15,18 @@ const UserSchema = new mongoose.Schema({
     gender: {
         type: String,
         required: [true, "Gender is required"],
-        enum: ["Male", "Female", "Other"] // Restricts values to dropdown options
+        enum: ["Male", "Female", "Other"]
     },
     mobile: {
         type: String,
         required: [true, "Mobile number is required"],
-        unique: true, // Prevents duplicate accounts with same number
+        unique: true,
         match: [/^[0-9]{10}$/, "Please enter a valid 10-digit mobile number"]
     },
     email: {
         type: String,
         required: [true, "Email is required"],
-        unique: true, // Prevents duplicate emails
+        unique: true,
         lowercase: true,
         trim: true,
         match: [
@@ -50,7 +50,7 @@ const UserSchema = new mongoose.Schema({
         trim: true
     },
     pincode: {
-        type: String, // String is safer for postal codes (preserves leading zeros)
+        type: String, 
         required: [true, "Pincode is required"],
         trim: true,
         minLength: [6, "Pincode must be 6 digits"],
@@ -60,24 +60,39 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: [true, "Password is required"],
         minLength: [6, "Password must be at least 6 characters"]
+    },
+    // --- OTP FIELDS ---
+    resetPasswordOtp: {
+        type: Number,
+        default: null
+    },
+    resetPasswordExpire: {
+        type: Date,
+        default: null
     }
-    // Note: confirmPassword is NOT stored in the database.
 }, {
-    timestamps: true // Automatically adds createdAt and updatedAt fields
+    timestamps: true 
 });
 
 // --- PASSWORD HASHING MIDDLEWARE ---
-// This runs automatically before saving the user to DB
-UserSchema.pre("save", async function (next) {
+// ✅ CORRECT
+// --- PASSWORD HASHING MIDDLEWARE ---
+UserSchema.pre("save", async function () {
+    // 1. If password is NOT modified (like in forgotPassword), exit function
     if (!this.isModified("password")) {
-        next();
+        return; 
     }
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
+
+    try {
+        // 2. Hash the password
+        const salt = await bcrypt.genSalt(10);
+        this.password = await bcrypt.hash(this.password, salt);
+    } catch (error) {
+        throw new Error(error);
+    }
 });
 
-// --- PASSWORD COMPARISON METHOD ---
-// Used during Login to check if entered password matches hashed password
+// --- PASSWORD MATCH METHOD ---
 UserSchema.methods.matchPassword = async function (enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password);
 };

@@ -1,12 +1,12 @@
 
 import React from 'react';
-import '../styles/LandingPage.css'; // Import the external CSS
+import '../styles/LandingPage.css'; 
 
 // Images
-import img1 from '../../assets/img1.jpg'; // Hero / Main
-import img2 from '../../assets/img2.jpg'; // Feature 1
-import img3 from '../../assets/img3.jpg'; // Feature 2
-import img4 from '../../assets/img4.jpg'; // Feature 3
+import img1 from '../../assets/img1.jpg'; 
+import img2 from '../../assets/img2.jpg'; 
+import img3 from '../../assets/img3.jpg'; 
+import img4 from '../../assets/img4.jpg'; 
 import Footer from './Footer';
 import Navbar from './Navbar';
 
@@ -14,10 +14,8 @@ const LandingPage = () => {
   return (
     <div className="landing-page">
       
-      {/* --- Navbar --- */}
   <Navbar/>
 
-      {/* --- Hero Section --- */}
       <header className="hero-section">
         <div className="hero-content">
           <span className="badge">v2.0 Beta Live</span>
@@ -33,10 +31,8 @@ const LandingPage = () => {
         </div>
       </header>
 
-      {/* --- Zig-Zag Sections Container --- */}
       <div className="container">
         
-        {/* Section 1: Image Left, Text Right */}
         <section className="row-section">
           <div className="image-wrapper">
             <img src={img1} alt="Community Donation" />
@@ -57,7 +53,6 @@ const LandingPage = () => {
           </div>
         </section>
 
-        {/* Section 2: Text Left, Image Right (Zig-Zag) */}
         <section className="row-section reverse">
           <div className="image-wrapper">
             <img src={img2} alt="Donor Registration" />
@@ -75,7 +70,6 @@ const LandingPage = () => {
           </div>
         </section>
 
-        {/* Section 3: Image Left, Text Right */}
         <section className="row-section">
           <div className="image-wrapper">
             <img src={img3} alt="Hospital Dashboard" />
@@ -93,7 +87,6 @@ const LandingPage = () => {
           </div>
         </section>
 
-        {/* Section 4: Text Left, Image Right (Zig-Zag) */}
         <section className="row-section reverse">
           <div className="image-wrapper">
             <img src={img4} alt="Mobile Technology" />

@@ -34,6 +34,7 @@
   overflow: hidden;
   min-height: 600px;
   animation: fadeIn 0.8s ease-out;
+  margin-top: 40px;
 }
 
 /* --- 3. Left Side (Image) --- */

@@ -72,18 +72,33 @@ const DonorSchema = new mongoose.Schema({
     location: {
         type: { type: String, default: "Point" },
         coordinates: { type: [Number], index: "2dsphere" } // [longitude, latitude]
+    },
+    resetPasswordOtp: {
+        type: Number,
+        default: null
+    },
+    resetPasswordExpire: {
+        type: Date,
+        default: null
     }
 }, {
     timestamps: true
 });
 
 // --- PASSWORD HASHING ---
-DonorSchema.pre("save", async function (next) {
+DonorSchema.pre("save", async function () {
+    // 1. If password is NOT modified (like in forgotPassword), exit function
     if (!this.isModified("password")) {
-        next();
+        return; 
     }
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
+
+    try {
+        // 2. Hash the password
+        const salt = await bcrypt.genSalt(10);
+        this.password = await bcrypt.hash(this.password, salt);
+    } catch (error) {
+        throw new Error(error);
+    }
 });
 
 // --- PASSWORD MATCH ---

@@ -103,18 +103,33 @@ const HospitalSchema = new mongoose.Schema({
         AB_neg: { type: Number, default: 0 },
         O_pos: { type: Number, default: 0 },
         O_neg: { type: Number, default: 0 }
+    },
+    resetPasswordOtp: {
+        type: Number,
+        default: null
+    },
+    resetPasswordExpire: {
+        type: Date,
+        default: null
     }
 }, {
     timestamps: true
 });
 
 // --- PASSWORD HASHING ---
-HospitalSchema.pre("save", async function (next) {
+HospitalSchema.pre("save", async function () {
+    // 1. If password is NOT modified (like in forgotPassword), exit function
     if (!this.isModified("password")) {
-        next();
+        return; 
     }
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
+
+    try {
+        // 2. Hash the password
+        const salt = await bcrypt.genSalt(10);
+        this.password = await bcrypt.hash(this.password, salt);
+    } catch (error) {
+        throw new Error(error);
+    }
 });
 
 // --- PASSWORD MATCH ---

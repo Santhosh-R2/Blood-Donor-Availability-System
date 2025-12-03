@@ -4,7 +4,9 @@ const {
     registerUser, 
     loginUser, 
     getUserProfile, 
-    updateUserProfile 
+    updateUserProfile ,
+    forgotPassword, 
+    resetPassword   
 } = require('../controllers/User.Controller');
 
 // Import your Auth Middleware (to protect routes)
@@ -13,7 +15,8 @@ const { protect } = require('../middleware/authMiddleware');
 // Public Routes
 router.post('/register', registerUser);
 router.post('/login', loginUser);
-
+router.post('/forgot-password', forgotPassword);
+router.post('/reset-password', resetPassword);
 // Private Routes (User must be logged in)
 router.route('/profile')
     .get(protect, getUserProfile)
