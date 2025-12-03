@@ -72,7 +72,7 @@ const HospitalLogin = () => {
 
           // 3. Redirect
           setTimeout(() => {
-            navigate('/hospital/dashboard'); // Or redirect to hospital dashboard
+            navigate('/hospital/dashboard'); 
           }, 2000);
 
         } else {
